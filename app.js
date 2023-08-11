@@ -8,17 +8,22 @@ const Joi = require('joi')
 const { campgroundSchema, reviewSchema } = require('./schemas.js')
 const Campground = require('./models/campground')
 const Review = require('./models/review')
-const flash = require('connect-flash')
+
 // Exports ROUTES 
 const campgrounds = require('./routes/campgrounds')
 const reviews = require('./routes/reviews')
-
-
+//auth requireing 
+const passport = require('passport')
+const LocalStaretgy = require('passport-local')
+const User = require('./models/user')
 const mongoose = require('mongoose')
 const campground = require('./models/campground')
 const catchAsync = require('./utils/catchAsync')
-const exp = require('constants')
-const session = require('express-session')
+// const exp = require('constants')
+
+const session = require('express-session');
+const flash = require('connect-flash')
+
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
     .then(() => {
         console.log(" Mongo CONNECTEDD")
@@ -71,29 +76,46 @@ const validateReview = (req, res, next) => {
     }
 }
 
-const sessionOptions = {
+//Auth
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStaretgy(User.authenticate()))
+
+
+
+const sessionConfig = {
     secret: 'this is sesson secret',
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: true,
         httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7) ,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         maxAge: 1000 * 60 * 60 * 24 * 7
 
     }
 
 }
 
-app.use(session(sessionOptions))
+app.use(session(sessionConfig))
 app.use(flash())
+
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
-})   
+})
+app.get('/fakeuser', async (req, res) => {
+    const user = User({
+        email: 'bedo@gm.com',
+        user: "sayem"
+    })
+    const newUser = await User.register(user, 'colt')
+    res.send(newUser)
+})
 app.use('/campgrounds', campgrounds)
 app.use('/campgrounds/:id/reviews', reviews)
+
 
 
 app.get('/', (req, res) => {
