@@ -10,11 +10,15 @@ const Campground = require('./models/campground')
 const Review = require('./models/review')
 
 // Exports ROUTES 
-const campgrounds = require('./routes/campgrounds')
-const reviews = require('./routes/reviews')
+const campgroundRoutes = require('./routes/campgrounds')
+const reviewRoutes = require('./routes/reviews')
+const usersRoutes =require('./routes/users')
 //auth requireing 
 const passport = require('passport')
 const LocalStaretgy = require('passport-local')
+
+
+
 const User = require('./models/user')
 const mongoose = require('mongoose')
 const campground = require('./models/campground')
@@ -37,6 +41,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
 app.engine('ejs', ejsMate)
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.urlencoded({ extended: true }))
 
 app.set('view engine', 'ejs')
 app.get('/', (req, res) => {
@@ -44,7 +49,6 @@ app.get('/', (req, res) => {
 })
 
 
-app.use(express.urlencoded({ extended: true }))
 
 //to use PUT or PATCH with form
 methodOverride = require('method-override')
@@ -76,13 +80,9 @@ const validateReview = (req, res, next) => {
     }
 }
 
-//Auth
-app.use(passport.initialize())
-app.use(passport.session())
-passport.use(new LocalStaretgy(User.authenticate()))
 
 
-
+    
 const sessionConfig = {
     secret: 'this is sesson secret',
     resave: false,
@@ -105,16 +105,26 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 })
+
+
+//Auth should be after session
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStaretgy(User.authenticate()))
+
+
 app.get('/fakeuser', async (req, res) => {
     const user = User({
         email: 'bedo@gm.com',
-        user: "sayem"
+        username: "sayem"
     })
     const newUser = await User.register(user, 'colt')
     res.send(newUser)
 })
-app.use('/campgrounds', campgrounds)
-app.use('/campgrounds/:id/reviews', reviews)
+
+app.use('/', usersRoutes)
+app.use('/campgrounds', campgroundRoutes)
+app.use('/campgrounds/:id/reviews', reviewRoutes)
 
 
 

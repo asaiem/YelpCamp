@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     }
 
 })
-// to enhance method in 'passport-local-mongoose'
+// to enhance methods in 'passport-local-mongoose' like password email checking
 UserSchema.plugin(passportLocalMongoose)
 
 module.exports = mongoose.model('User',UserSchema)

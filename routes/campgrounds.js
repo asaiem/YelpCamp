@@ -25,15 +25,8 @@ const validateCampground = (req, res, next) => {
     // console.log(msg);
 }
 
-
-
-
-
-
-
 router.get('/', catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({})
-    req.flash('success', 'Successfully made a new campground!');
     res.render('campgrounds/index', { campgrounds })
 }))
 
@@ -107,5 +100,5 @@ router.delete('/:id/reviews/:reviewId', catchAsync(async (req, res) => {
     res.redirect(`/campgrounds`)
     
 }))
-
+//IMPORTANT to MAKE router Working
 module.exports = router
