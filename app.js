@@ -99,14 +99,6 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash())
 
-
-app.use((req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-})
-
-
 //Auth should be after session
 app.use(passport.initialize())
 app.use(passport.session())
@@ -114,6 +106,17 @@ passport.use(new LocalStaretgy(User.authenticate()))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+    console.log(req.session)
+    
+    res.locals.currentUser = req.user
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
+
 
 
 app.get('/fakeuser', async (req, res) => {
