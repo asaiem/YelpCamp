@@ -112,6 +112,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new LocalStaretgy(User.authenticate()))
 
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.get('/fakeuser', async (req, res) => {
     const user = User({
