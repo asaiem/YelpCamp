@@ -37,7 +37,8 @@ router.get('/new', isLoggedIn,(req, res) => {
 })
 
 router.get('/:id', isLoggedIn,catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate('reviews')
+    const campground = await Campground.findById(req.params.id).populate('reviews').populate('auther')
+    console.log(campground)
     if (!campground) {
         req.flash('error', 'Cannot find that campground!');
         return res.redirect('/campgrounds');
@@ -58,8 +59,10 @@ router.get('/:id/edit', isLoggedIn,catchAsync(async (req, res) => {
 
 router.post('/',isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     // if(!req.body.campground) throw new ExpressError()
-
+    
     const campground = new Campground(req.body.campground)
+    // Saving the auther of the created camp
+    campground.auther = req.user._id
     // console.log(req.body.campground)
     await campground.save()
     // req.flash('success','CampGround Added successfuly')
@@ -68,10 +71,18 @@ router.post('/',isLoggedIn, validateCampground, catchAsync(async (req, res, next
     res.redirect(`/campgrounds/${campground._id}`)
 }))
 
+
+//updating campground
+
 router.put('/:id',isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
-
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground })
+// destructuring the req.body.campground
+    const campground = Campground.findById(id)
+    if(!campground.auther.equals(req.user._id)){
+        req.flash('error',"You don't have permission to edit")
+        return res.redirect(`/campground/${id}`)
+    }
+    const camp = await Campground.findByIdAndUpdate(id, { ...req.body.campground })
     console.log('campground')
     
         req.flash('success', 'Successfuly Updated the campground');
