@@ -30,10 +30,5 @@ router.delete('/:id', isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampgro
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm))
 
 
-
-
-
-
-
 //IMPORTANT to MAKE router Working
 module.exports = router

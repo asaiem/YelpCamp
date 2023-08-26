@@ -17,6 +17,7 @@ module.exports.showCampground =async (req, res) => {
             path: 'author'
         }
     }).populate('author')
+    // const campground = await Campground.findById(req.params.id).populate('reviews');
 
 
     console.log(campground)
