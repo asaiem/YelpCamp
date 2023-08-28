@@ -26,11 +26,7 @@
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" name='campground[location]' id="location" value=<%= campground.location %>required>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="image">Image Upload </label>
-                    <!-- <input class="form-control" type="text" name='campground[image]' id="image" value=<%= campground.image %>required> -->
-                    <input type="file" name="image" id="image" multiple>
-                </div>
+               
 
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
@@ -48,6 +44,10 @@
                         <span class="input-group-text" id="price">.00</span>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Multiple files input example</label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
+                  </div>
                 <!-- /////////////////////////////////////// -->
 
 

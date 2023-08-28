@@ -26,6 +26,7 @@ module.exports.isAuthor = async(req, res, next)=>{
         req.flash('error', "You don't have permission to edit")
         return res.redirect(`/campgrounds/${id}`)
     }
+    next()
 }
 
 
