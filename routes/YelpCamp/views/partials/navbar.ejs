@@ -1,0 +1,33 @@
+<div class="container-fluid">
+
+  <ul class="nav sticky-top navbar-dark bg-dark ">
+    <li class="nav-item">
+      <a class="nav-link active navbar-brand" aria-current="page" href="#">YelpCamp</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/campgrounds">Campgrounds</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/campgrounds/new">New Campground</a>
+    </li>
+    <ul class="nav sticky-top navbar-dark bg-dark ">
+      <% if(!currentUser){ %>
+        <li class="nav-item">
+          <a href="/register" class="nav-link ms-auto">Register</a>
+        </li>
+        <li class="nav-item">
+          <a href="/login" class="nav-link ms-auto">Login</a>
+        </li>
+        <% }else{ %>
+          <li class="nav-item">
+            <a href="/logout" class="nav-link ms-auto">logout</a>
+          
+          </li>
+          <!-- <% } %> -->
+    </ul>
+</div>
+
+<!-- this is different than colt one -->
