@@ -17,15 +17,15 @@ mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
 const sample = array => array[Math.floor(Math.random()*(array.length))]
 const seedDB = async()=>{
     await Campground.deleteMany({});
-    for( let i = 0; i < 50 ;i++){
+    for( let i = 0; i < 200 ;i++){
         const random1000 = Math.floor(Math.random()*1000);
         const price =Math.floor(Math.random()*20) + 10;
             const camp =new Campground({
                 author: '64d8c6e34501d224e30fec34',
                 location:`${cities[random1000].city} , ${ cities[random1000].state} `,
-                
+                // latitude: 37.9974219, longitude:
                 title :`${sample(descriptors)} ${sample(places)}`,
-                geometry: { type: 'Point', coordinates: [ 31.235726, 30.044388 ] },
+                geometry: { type: 'Point', coordinates: [ cities[random1000].longitude, cities[random1000].latitude ] },
                 images: [
                     {
                       url: 'https://res.cloudinary.com/dnsw1mkyu/image/upload/v1693089659/YelpCamp/fpi9aa4fn6xlbycbbji9.jpg',
