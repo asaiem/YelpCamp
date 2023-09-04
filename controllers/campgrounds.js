@@ -7,7 +7,9 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken })
 
 
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({})
+    const campgrounds = await Campground.find({}).populate({
+        path:'popupText',
+        strictPopulate:false})
     res.render('campgrounds/index', { campgrounds })
 }
 
@@ -18,6 +20,7 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.showCampground = async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate({
         path: 'reviews',
+        strictPopulate: false,
         populate: {
             path: 'author'
         }
