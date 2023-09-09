@@ -1,39 +1,41 @@
-if(process.env.NODE_ENV !== 'production '){
+if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
-
 }
 
-console.log(process.env.secret)
+
+// console.log(process.env.secret)
 const express = require('express')
-const app = express()
 const path = require('path')
 const morgan = require('morgan')
 const ejsMate = require('ejs-mate')
 const ExpressError = require('./utils/ExpressError')
+const passport = require('passport')
+const LocalStaretgy = require('passport-local')
+const mongoose = require('mongoose')
 const Joi = require('joi')
+
+const session = require('express-session');
+const flash = require('connect-flash')
+const mongoSanitize = require('express-mongo-sanitize');
+
 const { campgroundSchema, reviewSchema } = require('./schemas.js')
-const Campground = require('./models/campground')
+// const Campground = require('./models/campground')
 const Review = require('./models/review')
+
+
+//auth requireing 
+
+
+const User = require('./models/user')
+
+// const campground = require('./models/campground')
+// const catchAsync = require('./utils/catchAsync')
+// const exp = require('constants')
 
 // Exports ROUTES 
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
-const usersRoutes =require('./routes/users')
-//auth requireing 
-const passport = require('passport')
-const LocalStaretgy = require('passport-local')
-
-
-
-const User = require('./models/user')
-const mongoose = require('mongoose')
-const campground = require('./models/campground')
-const catchAsync = require('./utils/catchAsync')
-// const exp = require('constants')
-
-const session = require('express-session');
-const flash = require('connect-flash')
-
+const usersRoutes = require('./routes/users')
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
     .then(() => {
         console.log(" Mongo CONNECTEDD")
@@ -43,16 +45,17 @@ mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
         console.log(err)
 
     })
+const app = express()
 
 app.engine('ejs', ejsMate)
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }))
-
+app.use(mongoSanitize())
 app.set('view engine', 'ejs')
-app.get('/', (req, res) => {
-    res.render('home')
-})
+// app.get('/', (req, res) => {
+//     res.render('home')
+// })
 
 
 
@@ -60,46 +63,44 @@ app.get('/', (req, res) => {
 methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 
-const validateCampground = (req, res, next) => {
+// const validateCampground = (req, res, next) => {
 
-    const { error } = campgroundSchema.validate(req.body);
-    // let  msg;
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    }
-    else {
-        next()
-    }
-    // console.log(msg);
-}
+//     const { error } = campgroundSchema.validate(req.body);
+//     // let  msg;
+//     if (error) {
+//         const msg = error.details.map(el => el.message).join(',')
+//         throw new ExpressError(msg, 400)
+//     }
+//     else {
+//         next()
+//     }
+//     // console.log(msg);
+// }
 
-const validateReview = (req, res, next) => {
-    const { error } = validateReview.validate(req.body);
-    // let  msg;
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    }
-    else {
-        next()
-    }
-}
+// const validateReview = (req, res, next) => {
+//     const { error } = validateReview.validate(req.body);
+//     // let  msg;
+//     if (error) {
+//         const msg = error.details.map(el => el.message).join(',')
+//         throw new ExpressError(msg, 400)
+//     }
+//     else {
+//         next()
+//     }
+// }
 
 
 
-    
 const sessionConfig = {
-    secret: 'this is sesson secret',
+    secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        // secure:true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
-
     }
-
 }
 
 app.use(session(sessionConfig))
@@ -113,26 +114,39 @@ passport.use(new LocalStaretgy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// app.use((req, res, next) => {
+//     console.log(req.session)
+
+//     res.locals.currentUser = req.user
+//     res.locals.success = req.flash('success');
+//     res.locals.error = req.flash('error');
+//     next();
+// })
+
 app.use((req, res, next) => {
-    console.log(req.session)
-    
-    res.locals.currentUser = req.user
+    // console.log(req.session)
+    console.log(req.query)
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
+// app.use('/', usersRoutes)
+// app.use('/campgrounds', campgroundRoutes)
+// app.use('/campgrounds/:id/reviews', reviewRoutes)
 
 
 
-app.get('/fakeuser', async (req, res) => {
-    const user = User({
-        email: 'bedo@gm.com',
-        username: "sayem"
-    })
-    const newUser = await User.register(user, 'colt')
-    res.send(newUser)
-})
+
+// app.get('/fakeuser', async (req, res) => {
+//     const user = User({
+//         email: 'bedo@gm.com',
+//         username: "sayem"
+//     })
+//     const newUser = await User.register(user, 'colt')
+//     res.send(newUser)
+// })
 
 app.use('/', usersRoutes)
 app.use('/campgrounds', campgroundRoutes)
@@ -163,8 +177,8 @@ app.listen(3000, () => {
 
 
 
-// app.get('/makecampground',async(req,res)=>{
-//     const camp = new Campground({title:"My BackYard"})
-//     await camp.save()
-//     res.send(camp)
-// })
+    // app.get('/makecampground',async(req,res)=>{
+    //     const camp = new Campground({title:"My BackYard"})
+    //     await camp.save()
+    //     res.send(camp)
+    // })
