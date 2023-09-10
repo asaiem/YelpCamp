@@ -15,9 +15,11 @@ const mongoose = require('mongoose')
 const Joi = require('joi')
 
 const session = require('express-session');
+const MongoDBStore = require('connect-mongo')(session);
+
 const flash = require('connect-flash')
 const mongoSanitize = require('express-mongo-sanitize');
-const helmet =  require('helmet')
+const helmet = require('helmet')
 const { campgroundSchema, reviewSchema } = require('./schemas.js')
 // const Campground = require('./models/campground')
 const Review = require('./models/review')
@@ -36,7 +38,13 @@ const User = require('./models/user')
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
 const usersRoutes = require('./routes/users')
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+
+// in case of deploying
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
+// process.env.DB_URL
+
+
+mongoose.connect(dbUrl)
     .then(() => {
         console.log(" Mongo CONNECTEDD")
     })
@@ -45,6 +53,18 @@ mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
         console.log(err)
 
     })
+
+
+// in case of local storage:
+// mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+//     .then(() => {
+//         console.log(" Mongo CONNECTEDD")
+//     })
+//     .catch((err) => {
+//         console.log("OHH Mongo Error Connection")
+//         console.log(err)
+
+//     })
 const app = express()
 
 app.engine('ejs', ejsMate)
@@ -90,8 +110,6 @@ app.use(methodOverride('_method'))
 
 
 app.use(helmet());
-
-
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://api.tiles.mapbox.com/",
@@ -135,10 +153,22 @@ app.use(
         },
     })
 );
+secret = process.env.secret || 'thisshouldbeabettersecret!'
+
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+
+})
+store.on("error", function (e) {
+    console.log('Storing Error', e)
+})
 
 const sessionConfig = {
-    name:'session',
-    secret: 'thisshouldbeabettersecret!',
+    name: 'session',
+    secret,
+    store,
     resave: false,
     saveUninitialized: true,
     cookie: {
