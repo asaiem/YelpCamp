@@ -40,7 +40,8 @@ const reviewRoutes = require('./routes/reviews')
 const usersRoutes = require('./routes/users')
 
 // in case of deploying
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
+// const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
+const dbUrl = process.env.DB_URL;
 
 // process.env.DB_URL
 
@@ -253,8 +254,8 @@ app.listen(3000, () => {
 
 
 
-    // app.get('/makecampground',async(req,res)=>{
-    //     const camp = new Campground({title:"My BackYard"})
-    //     await camp.save()
-    //     res.send(camp)
-    // })
+// app.get('/makecampground',async(req,res)=>{
+//     const camp = new Campground({title:"My BackYard"})
+//     await camp.save()
+//     res.send(camp)
+// })
