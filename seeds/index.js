@@ -15,7 +15,7 @@ mongoose.connect(dbUrl)
 
     });
 
-
+    require('dotenv').config();
 const sample = array => array[Math.floor(Math.random() * (array.length))]
 const seedDB = async () => {
     await Campground.deleteMany({});
