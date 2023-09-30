@@ -4,8 +4,8 @@ const cities = require('./cities')
 const { descriptors, places } = require('./seedHelpers')
 // const dbUrl = process.env.DB_URL 
 const dbUrl = process.env.DB_URL
-
-mongoose.connect(dbUrl)
+'mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/?retryWrites=true&w=majority'
+mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
     .then(() => {
         console.log(" Mongo CONNECTEDD")
     })
@@ -15,11 +15,11 @@ mongoose.connect(dbUrl)
 
     });
 
-    require('dotenv').config();
+require('dotenv').config();
 const sample = array => array[Math.floor(Math.random() * (array.length))]
 const seedDB = async () => {
     await Campground.deleteMany({});
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({

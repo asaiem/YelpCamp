@@ -40,12 +40,12 @@ const reviewRoutes = require('./routes/reviews')
 const usersRoutes = require('./routes/users')
 
 // in case of deploying
-// const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
+// const dbUrl = process.env.DB_URL;
 
 // process.env.DB_URL
 
-mongoose.connect(dbUrl)
+mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
     .then(() => {
         console.log(" Mongo CONNECTEDD")
     })
