@@ -45,7 +45,8 @@ const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
 
 // process.env.DB_URL
 
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+mongoose.connect('mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/?retryWrites=true&w=majority'
+)
     .then(() => {
         console.log(" Mongo CONNECTEDD")
     })
