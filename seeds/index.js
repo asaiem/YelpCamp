@@ -4,9 +4,7 @@ const cities = require('./cities')
 const { descriptors, places } = require('./seedHelpers')
 // const dbUrl = process.env.DB_URL 
 const dbUrl = process.env.DB_URL
-// 'mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/?retryWrites=true&w=majority'
-mongoose.connect('mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/?retryWrites=true&w=majority'
-)
+mongoose.connect('mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/?retryWrites=true&w=majority')
     .then(() => {
         console.log(" Mongo CONNECTEDD")
     })
