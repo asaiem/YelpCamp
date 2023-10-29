@@ -17,7 +17,7 @@ mongoose.connect('mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/
 require('dotenv').config();
 const sample = array => array[Math.floor(Math.random() * (array.length))]
 const seedDB = async () => {
-    await Campground.deleteMany({});
+    // await Campground.deleteMany({});
     for (let i = 0; i < 1; i++) {
         // const random1000 = Math.floor(Math.random() * 1000);
         // const price = Math.floor(Math.random() * 20) + 10;
