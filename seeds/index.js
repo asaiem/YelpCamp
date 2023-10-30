@@ -1,3 +1,7 @@
+
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config({ path: "../.env" });
+}
 const Campground = require('../models/campground')
 const mongoose = require('mongoose')
 const cities = require('./cities')
