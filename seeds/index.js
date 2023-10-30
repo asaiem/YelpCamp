@@ -2,6 +2,7 @@
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config({ path: "../.env" });
 }
+
 const Campground = require('../models/campground')
 const mongoose = require('mongoose')
 const cities = require('./cities')
@@ -10,7 +11,8 @@ const { descriptors, places } = require('./seedHelpers')
 const dbUrl = process.env.DB_URL
 // 'mongodb://127.0.0.1:27017/yelp-camp'
 //'mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/'
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/'
+)
     .then(() => {
         console.log(" Mongo CONNECTEDD")
     })
@@ -19,7 +21,7 @@ mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log(err);
 
     });
-
+console.log(dbUrl)
 require('dotenv').config();
 const sample = array => array[Math.floor(Math.random() * (array.length))]
 const seedDB = async () => {
