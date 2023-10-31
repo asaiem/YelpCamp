@@ -1,8 +1,8 @@
 
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config({ path: "../.env" });
-}
-
+// if (process.env.NODE_ENV !== "production") {
+//     require("dotenv").config({ path: "../.env" });
+// }
+require('dotenv').config();
 const Campground = require('../models/campground')
 const mongoose = require('mongoose')
 const cities = require('./cities')
@@ -10,8 +10,7 @@ const { descriptors, places } = require('./seedHelpers')
 // const dbUrl = process.env.DB_URL 
 const dbUrl = process.env.DB_URL
 // 'mongodb://127.0.0.1:27017/yelp-camp'
-//'mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/'
-mongoose.connect('mongodb+srv://am4195:01090374398@cluster0.5s3cdob.mongodb.net/'
+mongoose.connect(dbUrl
 )
     .then(() => {
         console.log(" Mongo CONNECTEDD")
