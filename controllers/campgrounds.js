@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+
 const { model } = require("mongoose")
 const Campground = require('../models/campground')
 const { cloudinary } = require("../cloudinary")

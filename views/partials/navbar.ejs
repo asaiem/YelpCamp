@@ -1,33 +1,62 @@
-<div class="container-fluid">
 
-  <ul class="nav sticky-top navbar-dark bg-dark ">
-    <li class="nav-item">
-      <a class="nav-link active navbar-brand" aria-current="page" href="#">YelpCamp</a>
+<style>
+   .nav-link {
+    padding: 0.25rem 0;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    margin-left: 1rem;
+    border-bottom: 0.25rem solid transparent;
+}
+
+.nav-link:hover{
+    color: white  ;
+    border-bottom-color:rgba(11, 126, 152, 0.51);
+}
+
+.nav-link.active {
+    color: white; 
+    border-bottom-color:white;
+
+}
+
+.btn-secondary, .btn-secondary:hover{
+    color: #B46060;
+    text-shadow: none;
+}
+
+</style>
+<div style="background-color: B46060;" >
+
+  <ul class="nav nav-masthead sticky-top navbar-dark bg-dark p-2 py-2" >
+     <li class="nav-item">
+      <a class="nav-link navbar-brand" aria-current="page" href="/">YelpCamp</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="/">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/campgrounds">Campgrounds</a>
+      <a class="nav-link " href="/campgrounds">Campgrounds</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/campgrounds/new">New Campground</a>
     </li>
-    <ul class="nav sticky-top navbar-dark bg-dark ">
+    <!-- <ul class="nav sticky-top navbar-dark bg-dark float-md-right">  -->
+    <ul class="nav  justify-content-center  ml-auto  px-1">
       <% if(!currentUser){ %>
         <li class="nav-item">
-          <a href="/register" class="nav-link ms-auto">Register</a>
-        </li>
+          <a href="/register" class="nav-link ">Register</a>
+          </li>
         <li class="nav-item">
-          <a href="/login" class="nav-link ms-auto">Login</a>
+          <a href="/login" class="nav-link  ">Login</a>
         </li>
         <% }else{ %>
           <li class="nav-item">
-            <a href="/logout" class="nav-link ms-auto">logout</a>
+            <a href="/logout" class="nav-link">logout</a>
           
           </li>
-          <!-- <% } %> -->
-    </ul>
+         <% } %>
+    </ul> 
 </div>
 
-<!-- this is different than colt one -->
+
+

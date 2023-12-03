@@ -1,10 +1,10 @@
-// if (process.env.NODE_ENV !== 'production') {
-//     require('dotenv').config()
-// }
-
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config({ path: "../.env" });
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
 }
+
+// if (process.env.NODE_ENV !== "production") {
+//     require("dotenv").config({ path: "../.env" });
+// }
 
 // console.log(process.env.secret)
 const express = require('express')
@@ -48,9 +48,11 @@ const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp'
 
 // process.env.DB_URL
 
-mongoose.connect(dbUrl)
+mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
     .then(() => {
         console.log(" Mongo CONNECTEDD")
+        console.log('>>>>>>>' + process.env.MAPBOX_TOKEN)
+
     })
     .catch((err) => {
         console.log("OHH Mongo Error Connection")
